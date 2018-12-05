@@ -23,7 +23,9 @@ setup(name='uvc.qah',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          # -*- Extra requirements: -*-
+          'pycrypto',
+          'zope.generations',
+          'zope.intid',
       ],
       entry_points={
          'fanstatic.libraries': [
@@ -31,4 +33,4 @@ setup(name='uvc.qah',
             ],
          'z3c.autoinclude.plugin': 'target=uvcsite', 
       }
-      )
+)

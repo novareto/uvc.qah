@@ -1,6 +1,12 @@
 <configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:grok="http://namespaces.zope.org/grok">
   <include package="grok" />
+  <include package="zope.intid" />
+<grok:grok package="uvcsite.tests.fixtures.usermanagement" />
+  <include package="zope.intid" file="subscribers.zcml" />
+  <browser:defaultSkin name="tbskin" />
+  <include package="zope.generations" file="subscriber.zcml" />
+  <include package=".generations" />
   <grok:grok package="." />
 </configure>
-
