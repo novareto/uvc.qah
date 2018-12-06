@@ -15,7 +15,7 @@ from .indexes import QAHUsersCatalog
 from .interfaces import QAHDeployment
 
 
-class QAHPlugin(uvcsite.plugins.Plugin):
+class QAHPlugin(uvcsite.plugins.ComplexPlugin):
     grok.name('ukh.qah')
 
     fa_icon = 'book'
@@ -28,46 +28,6 @@ class QAHPlugin(uvcsite.plugins.Plugin):
         'authenticator': uvcsite.plugins.subplugins.PAUComponent(
             UserAuthenticatorPlugin, 'authenticator')
         }
-
-    @property
-    def status(self):
-        statuses = [sp.status for sp in self.subplugins.values()]
-        states = set((s.state for s in statuses))
-        if len(states) > 1:
-            status = uvcsite.plugins.Status(
-                state=uvcsite.plugins.States.INCONSISTANT)
-        elif uvcsite.plugins.States.INSTALLED in states:
-            status = uvcsite.plugins.Status(
-                state=uvcsite.plugins.States.INSTALLED)
-        else:
-            status = uvcsite.plugins.Status(
-                state=uvcsite.plugins.States.NOT_INSTALLED)
-
-        for s in statuses:
-            if s.infos:
-                status.infos.extend(s.infos)
-
-        return status
-
-    @uvcsite.plugins.plugin_action(
-        'Install', uvcsite.plugins.States.NOT_INSTALLED,
-        uvcsite.plugins.States.INCONSISTANT)
-    def install(self, site):
-        errors = []
-        for sp in self.subplugins.values():
-            try:
-                sp.install(site)
-            except uvcsite.plugins.PluginError as exc:
-                errors.extend(exc.messages)
-
-        if errors:
-            raise uvcsite.plugins.PluginError(
-                u'QAH installation encountered errors', *errors)
-
-        return uvcsite.plugins.Result(
-            value=u'QAH installed with success',
-            type=uvcsite.plugins.ResultTypes.MESSAGE,
-            redirect=True)
 
     @uvcsite.plugins.plugin_action(
         'Diagnostic', uvcsite.plugins.States.INSTALLED)
@@ -96,21 +56,13 @@ class QAHPlugin(uvcsite.plugins.Plugin):
             redirect=True)
 
     @uvcsite.plugins.plugin_action(
+        'Install', uvcsite.plugins.States.NOT_INSTALLED,
+        uvcsite.plugins.States.INCONSISTANT)
+    def install(self, site):
+        return self.dispatch('install', site)
+    
+    @uvcsite.plugins.plugin_action(
         'Uninstall', uvcsite.plugins.States.INSTALLED,
         uvcsite.plugins.States.INCONSISTANT)
     def uninstall(self, site):
-        errors = []
-        for sp in self.subplugins.values():
-            try:
-                sp.uninstall(site)
-            except uvcsite.plugins.PluginError as exc:
-                errors.extend(exc.errors)
-
-        if errors:
-            raise uvcsite.plugins.PluginError(
-                u'QAH uninstallation encountered errors', *errors)
-
-        return uvcsite.plugins.Result(
-            value=u'QAH uninstalled with success',
-            type=uvcsite.plugins.ResultTypes.MESSAGE,
-            redirect=True)
+        return self.dispatch('uninstall', site)

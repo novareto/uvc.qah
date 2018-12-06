@@ -22,15 +22,19 @@ setup(name='uvc.qah',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'setuptools',
+          'grok',
           'pycrypto',
-          'zope.generations',
-          'zope.intid',
+          'setuptools',
+          'uvc.tbskin',
+          'uvcsite',
+          'zope.catalog',
+          'zope.component',
+          'zope.interface',
+          'zope.pluggableauth',
+          'zope.publisher',
+          'zope.schema',
       ],
       entry_points={
-         'fanstatic.libraries': [
-            'uvc.qah = uvc.qah.resources:library',
-            ],
          'z3c.autoinclude.plugin': 'target=uvcsite', 
       }
 )

@@ -1,0 +1,7 @@
+Token: generate
+===============
+
+  >>> from uvc.qah.auth import encrypt, decrypt
+
+  >>> token = encrypt('test')
+  >>> assert decrypt(token) == 'test'

@@ -1,0 +1,14 @@
+Install plugin
+==============
+
+:doctest:
+:layer: uvc.qah.tests.test_functional.layer
+
+Let's first create an instance of Uvcsite at the top level:
+
+   >>> from uvcsite import UVCSite
+   >>> from zope.site.hooks import setSite
+   >>> root = getRootFolder()
+   >>> app = UVCSite()
+   >>> root['app'] = app
+   >>> setSite(root['app'])

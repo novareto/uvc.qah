@@ -7,7 +7,7 @@ from zope.interface import Interface, implementer
 from zope.pluggableauth.factories import Principal
 from zope.pluggableauth import interfaces
 from zope.catalog.interfaces import ICatalog
-from zope.component import getUtility
+from zope.component import queryUtility
 from zope.publisher.interfaces import IRequest
 from zope.publisher.browser import applySkin
 from .skin import ITemporarySkin
@@ -56,7 +56,9 @@ class UserAuthenticatorPlugin(grok.GlobalUtility):
     required = {'login', 'password'}
     
     def getAccount(self, id):
-        catalog = getUtility(ICatalog, name="qah.users_catalog")
+        catalog = queryUtility(ICatalog, name="qah.users_catalog")
+        if catalog is None:
+            return None
         users = list(catalog.searchResults(uid=(id, id)))
         if users:
             assert len(users) == 1
