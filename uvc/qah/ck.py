@@ -11,10 +11,12 @@ from grokcore.annotation import Annotation
 from zope.interface import implementer
 from zeam.form.base import makeAdaptiveDataManager
 from dolmen.forms.base.utils import set_fields_data
+from zope.location import Location
 
 
 @implementer(ITemporaryUser)
-class CredentialsAnnotation(Annotation):
+class CredentialsAnnotation(Annotation, Location):
+    grok.provides(ITemporaryUser)
     grok.context(uvcsite.IContent)
 
 
@@ -25,8 +27,6 @@ class AddSpecialUser(uvcsite.Form):
     label = u"Einmal Passwort"
     description = u"Beschreibung"
 
-    #dataManager = makeAdaptiveDataManager(ITemporaryUser)
-
     fields = uvcsite.Fields(ITemporaryUser, IPassword).omit('token')
 
     @uvcsite.action(u'Benutzer erstellen')
@@ -34,11 +34,8 @@ class AddSpecialUser(uvcsite.Form):
         data, errors = self.extractData()
         if errors:
             return
-        alsoProvides(self.context, ITemporaryUser)
-        anno = ITemporaryUser(self.context)
         token = encrypt('%s:%s' % (data['uid'], data['password']))
-        #set_fields_data(self.fields, self.getContentData(), data)
+        anno = ITemporaryUser(self.context)
+        set_fields_data(self.fields, anno, data)
         anno.token = token
-        anno.uid = data['uid']
-        anno.email = data['email']
-        grok.notify(grok.ObjectAddedEvent(self.context))  # BBB Triggers Workflow ?
+        grok.notify(grok.ObjectAddedEvent(anno))  # BBB Triggers Workflow ?
