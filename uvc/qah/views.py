@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# # Copyright (c) 2007-2019 NovaReto GmbH
+# # cklinger@novareto.de
+
+
 import grok
 import uvcsite
 from .skin import ITemporarySkin
@@ -9,4 +14,6 @@ class TemporaryHome(grok.View):
     grok.layer(ITemporarySkin)
     
     def render(self):
-        return 'Temporary user, allowed to edit: %s' % repr(self.request.principal.document)
+        url = self.url(self.request.principal.document, 'edit')
+        self.flash(u'Bitte füllen Sie die folgenden Felder')
+        self.redirect(url)

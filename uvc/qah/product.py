@@ -34,7 +34,7 @@ class ITemporaryUser(zope.interface.Interface):
         required=True
     )
 
-    email = zope.schema.ASCIILine(
+    email = zope.schema.TextLine(
         title=u"Email",
         required=True
     )
