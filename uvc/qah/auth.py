@@ -61,10 +61,8 @@ class UserAuthenticatorPlugin(grok.GlobalUtility):
             return None
         users = list(catalog.searchResults(uid=(id, id)))
         if users:
-            print "MATCH IN QAH LOGIN"
             assert len(users) == 1
             return users[0]
-        print "NO MATCH IN QAH LOGIN"
         return None
 
     def authenticateCredentials(self, credentials):

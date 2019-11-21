@@ -1,0 +1,6 @@
+<div>
+  <h1>Sonder Zugriff</h1>
+  <p> Folgender Benutzer hat Zugrifffsrechte </p>
+  <span tal:content="view.user.uid"/>
+  <span tal:content="view.user.email"/>
+  </div>
