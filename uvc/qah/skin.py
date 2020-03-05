@@ -7,5 +7,5 @@ class ITemporaryLayer(grok.IDefaultBrowserLayer):
     pass
 
 
-class ITemporarySkin(ITemporaryLayer, IGuvExSkin):
+class ITemporarySkin(ITemporaryLayer):
     grok.skin('qah.temporary')

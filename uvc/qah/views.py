@@ -58,13 +58,12 @@ class ShowSpecialUser(uvcsite.Page):
         self.user = ITemporaryUser(self.context)
 
 
-class TemporaryHome(grok.View):
-    grok.name('index')
-    grok.context(uvcsite.IUVCSite)
-    grok.layer(ITemporarySkin)
-
-    def render(self):
-        url = self.url(self.request.principal.document.__parent__, 'edit')
-        import pdb; pdb.set_trace()
-        self.flash(u'Bitte füllen Sie die folgenden Felder')
-        self.redirect(url)
+#class TemporaryHome(grok.View):
+#    grok.name('index')
+#    grok.context(uvcsite.IUVCSite)
+#    grok.layer(ITemporarySkin)
+#
+#    def render(self):
+#        url = self.url(self.request.principal.document.__parent__, 'edit')
+#        self.flash(u'Bitte füllen Sie die folgenden Felder')
+#        self.redirect(url)
