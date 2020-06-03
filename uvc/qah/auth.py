@@ -103,5 +103,4 @@ class TemporaryInfoFactory(grok.MultiAdapter):
         grok.notify(interfaces.AuthenticatedPrincipalCreated(
             authentication, principal, self.info, self.request))
         applySkin(self.request, ITemporarySkin)
-        print "applySkin"
         return principal
